@@ -20,8 +20,6 @@ function closeBuyNowForm() {
 
 // Handle Buy Now Form Submission
 function handleBuyNow(event) {
-    event.preventDefault();
-    
     // Get form values
     const email = document.getElementById('email').value;
     const zipcode = document.getElementById('zipcode').value;
@@ -30,6 +28,7 @@ function handleBuyNow(event) {
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+        event.preventDefault();
         alert('Please enter a valid email address');
         return;
     }
@@ -37,24 +36,21 @@ function handleBuyNow(event) {
     // Validate zipcode
     const zipRegex = /^\d{5}$/;
     if (!zipRegex.test(zipcode)) {
+        event.preventDefault();
         alert('Please enter a valid 5-digit ZIP code');
         return;
     }
     
-    // Close the form modal
-    closeBuyNowForm();
-    
-    // Show area not available popup
-    setTimeout(() => {
-        showAreaPopup();
-    }, 300);
-    
-    // Here you could also send the data to a backend API
-    console.log('Form submitted:', {
+    // Form is valid - let it submit to Netlify
+    // The form will submit and Netlify will capture the data
+    console.log('Form submitted to Netlify:', {
         email: email,
         zipcode: zipcode,
         marketing: marketing
     });
+    
+    // Note: After deployment to Netlify, submissions will appear in your Netlify dashboard
+    // under Site > Forms
 }
 
 // Show Area Not Available Popup

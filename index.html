@@ -363,7 +363,13 @@
         <div class="modal-content">
             <span class="close" onclick="closeBuyNowForm()">&times;</span>
             <h2>Complete Your Purchase</h2>
-            <form id="buyNowForm" onsubmit="handleBuyNow(event)">
+            <form id="buyNowForm" name="contact" method="POST" netlify netlify-honeypot="bot-field" onsubmit="handleBuyNow(event)">
+                <!-- Hidden field for spam protection -->
+                <input type="hidden" name="form-name" value="contact">
+                <p style="display:none;">
+                    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                </p>
+                
                 <div class="form-group">
                     <label for="email">Email Address <span class="required">*</span></label>
                     <input type="email" id="email" name="email" required placeholder="your@email.com">
@@ -376,7 +382,7 @@
                 
                 <div class="form-group checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="marketing" name="marketing">
+                        <input type="checkbox" id="marketing" name="marketing" value="yes">
                         <span>I'm okay with being reached out by the marketing and customer acquisition team</span>
                     </label>
                 </div>
