@@ -20,6 +20,8 @@ function closeBuyNowForm() {
 
 // Handle Buy Now Form Submission
 function handleBuyNow(event) {
+    event.preventDefault(); // Prevent default form submission
+    
     // Get form values
     const email = document.getElementById('email').value;
     const zipcode = document.getElementById('zipcode').value;
@@ -28,7 +30,6 @@ function handleBuyNow(event) {
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        event.preventDefault();
         alert('Please enter a valid email address');
         return;
     }
@@ -36,21 +37,33 @@ function handleBuyNow(event) {
     // Validate zipcode
     const zipRegex = /^\d{5}$/;
     if (!zipRegex.test(zipcode)) {
-        event.preventDefault();
         alert('Please enter a valid 5-digit ZIP code');
         return;
     }
     
-    // Form is valid - let it submit to Netlify
-    // The form will submit and Netlify will capture the data
-    console.log('Form submitted to Netlify:', {
-        email: email,
-        zipcode: zipcode,
-        marketing: marketing
+    // Submit form data to Netlify in the background
+    const form = document.getElementById('buyNowForm');
+    const formData = new FormData(form);
+    
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+    })
+    .then(() => {
+        console.log('Form submitted to Netlify successfully');
+    })
+    .catch((error) => {
+        console.error('Form submission error:', error);
     });
     
-    // Note: After deployment to Netlify, submissions will appear in your Netlify dashboard
-    // under Site > Forms
+    // Close the form modal
+    closeBuyNowForm();
+    
+    // Show area not available popup
+    setTimeout(() => {
+        showAreaPopup();
+    }, 300);
 }
 
 // Show Area Not Available Popup
